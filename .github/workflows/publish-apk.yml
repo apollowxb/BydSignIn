@@ -1,13 +1,13 @@
 name: publish-apk
 
-# 用途：把已签名 APK 搬运进仓库 apk/ 目录，供 jsDelivr / raw.githubusercontent 分发（app 内下载的备用通道）
-# 触发：推送本文件或 apk-src.txt 到 main
+# 用途：把已签名 APK 搬运进仓库 apk/ 目录，作为备用下载通道
+# 触发：仅推送 apk-src.txt 到 main（改本文件本身不触发），也可手动 workflow_dispatch
 # 文件名取自 update.json 的 version；下载后用 update.json 的 size 校验，防止搬错包
+# 注意：GitHub runner 访问国内 CDN 常很慢，超时已收紧，失败时请用 workflow_dispatch 重试
 on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/publish-apk.yml'
       - 'apk-src.txt'
   workflow_dispatch:
 
@@ -17,6 +17,7 @@ permissions:
 jobs:
   fetch-apk:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -37,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p apk
-          curl -L --fail --retry 3 --retry-delay 5 --max-time 900 \
+          curl -L --fail --connect-timeout 20 --max-time 150 --retry 2 --retry-delay 3 \
             -o "${{ steps.src.outputs.file }}" "${{ steps.src.outputs.url }}"
           ls -l apk/
 
