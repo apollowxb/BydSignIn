@@ -1,10 +1,10 @@
 {
   "version": "26.1116.23",
-  "apk": "https://aka.doubaocdn.com/s/vYNMMtq23V",
+  "apk": "https://aka.doubaocdn.com/s/af5yHgJuD1",
   "apk_mirrors": [
     "https://raw.githubusercontent.com/apollowxb/BydSignIn/main/apk/BydSignIn-26.1116.23.apk"
   ],
-  "size": 14670885,
+  "size": 6270166,
   "notes": "首页版本号可点、检查更新卡片可长按\n· 首页底部「Version …」文字点一下就会检查新版本，过程与结果都有 toast（正在检查 / 已是最新 / 检查失败原因），发现新版直接弹更新弹窗\n· 设置页「检查更新」卡片长按 = 重新开启更新提醒：清掉「1周不再提醒」「1个月不再提醒」和「永不提醒」，之后启动 App 又会自动检查；卡片说明下方新增一行「长按此处重新开启更新提醒」\n· 关掉提醒又正好没有新版时，也能靠这一下把自动检查恢复回来，不必等新版发布\n\n本版同时包含\n· 更新弹窗去掉「重新提醒」按钮，按钮固定为立即更新 + 三个推迟项\n· 手动检查仍绕过静默策略，任何时候都能自己查有没有新版\n· 检查结果区分「已是最新版本」「手机未联网」「无法访问 GitHub」\n· 设置页切换亮/暗模式保持滚动位置；任意页面弹更新提醒\n· 亮色模式整页淡蓝配色，暗色不变",
   "page": "https://github.com/apollowxb/BydSignIn"
 }
