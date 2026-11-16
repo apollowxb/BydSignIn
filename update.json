@@ -1,7 +1,9 @@
 {
   "version": "26.1116.22",
   "apk": "https://aka.doubaocdn.com/s/ethGG2txpM",
-  "apk_mirrors": [],
+  "apk_mirrors": [
+    "https://raw.githubusercontent.com/apollowxb/BydSignIn/main/apk/BydSignIn-26.1116.22.apk"
+  ],
   "size": 15711269,
   "notes": "检查更新提示去掉 GitHub 字样\n· 手动检查时提示「正在检查新版本」，不再出现「连接 GitHub」\n· 亮色模式下主页设置齿轮、颜色模式按钮（图标与文字）与「自动」模式白天均改为与「授权状态」一致的主题蓝，夜间保持白色\n\n本版同时包含\n· 设置页「检查更新」卡片，可随时手动检查（停用自动提醒后也能查）\n· 静默期内手动检查只显示「重新提醒」，点击即恢复开机自动检测\n· 检查结果区分「已是最新版本」「手机未联网」「无法访问 GitHub」\n· 更新弹窗「立即更新」按钮自适应宽度居中\n· 亮色模式整页淡蓝配色，暗色配色不变",
   "page": "https://github.com/apollowxb/BydSignIn"
