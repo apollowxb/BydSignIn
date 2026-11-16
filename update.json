@@ -1,10 +1,10 @@
 {
   "version": "26.1117.0",
-  "apk": "https://aka.doubaocdn.com/s/lWiyefTL1H",
+  "apk": "https://aka.doubaocdn.com/s/MJ0hLn6c2v",
   "apk_mirrors": [
     "https://raw.githubusercontent.com/apollowxb/BydSignIn/main/apk/BydSignIn-26.1117.0.apk"
   ],
-  "size": 14593507,
+  "size": 14675064,
   "notes": "下载进度弹窗改为毛玻璃卡片，带实时进度条\n· 点「立即更新」后的下载弹窗与更新提醒弹窗共用同一套半透明毛玻璃：20dp 圆角、卡片底色半透明、Android 12 及以上窗口背景模糊\n· 标题「正在下载 版本号」下方新增圆角进度条，按主题色的指示器实时推进，并显示「百分比　已下载 / 总大小」\n· 进度条下方提示下载完成后会拉起系统安装界面，安装确认仍由用户手动点",
   "page": "https://github.com/apollowxb/BydSignIn"
 }
