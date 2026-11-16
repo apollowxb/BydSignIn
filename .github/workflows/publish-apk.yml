@@ -1,0 +1,63 @@
+name: publish-apk
+
+# 用途：把已签名 APK 搬运进仓库 apk/ 目录，供 jsDelivr 分发（app 内下载走 cdn.jsdelivr.net）
+# 触发：推送本文件或 apk-src.txt 到 main
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-apk.yml'
+      - 'apk-src.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read source url
+        id: src
+        run: |
+          URL=$(tr -d '\r\n' < apk-src.txt)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "source: $URL"
+
+      - name: Download apk
+        run: |
+          set -euo pipefail
+          mkdir -p apk
+          curl -L --fail --retry 3 --retry-delay 5 --max-time 900 \
+            -o apk/BydSignIn-26.1115.16.apk "${{ steps.src.outputs.url }}"
+          ls -l apk/
+
+      - name: Verify package
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import zipfile, hashlib, os
+          p = 'apk/BydSignIn-26.1115.16.apk'
+          assert os.path.getsize(p) > 5_000_000, 'file too small'
+          z = zipfile.ZipFile(p)
+          names = z.namelist()
+          assert 'AndroidManifest.xml' in names, 'not an apk'
+          assert 'classes.dex' in names, 'no dex'
+          print('entries:', len(names))
+          print('sha256:', hashlib.sha256(open(p,'rb').read()).hexdigest())
+          PY
+
+      - name: Commit apk
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A apk
+          if git diff --cached --quiet; then
+            echo 'no change'
+          else
+            git commit -m 'apk: add BydSignIn-26.1115.16.apk'
+            git push origin HEAD:main
+          fi
