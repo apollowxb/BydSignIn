@@ -1,7 +1,8 @@
 name: publish-apk
 
-# 用途：把已签名 APK 搬运进仓库 apk/ 目录，供 jsDelivr 分发（app 内下载走 cdn.jsdelivr.net）
+# 用途：把已签名 APK 搬运进仓库 apk/ 目录，供 jsDelivr / raw.githubusercontent 分发（app 内下载的备用通道）
 # 触发：推送本文件或 apk-src.txt 到 main
+# 文件名取自 update.json 的 version；下载后用 update.json 的 size 校验，防止搬错包
 on:
   push:
     branches: [main]
@@ -19,33 +20,44 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Read source url
+      - name: Read source url and target name
         id: src
         run: |
+          set -euo pipefail
           URL=$(tr -d '\r\n' < apk-src.txt)
+          VERSION=$(python3 -c "import json;print(json.load(open('update.json'))['version'])")
+          SIZE=$(python3 -c "import json;print(json.load(open('update.json')).get('size',''))")
           echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "file=apk/BydSignIn-$VERSION.apk" >> "$GITHUB_OUTPUT"
+          echo "expect=$SIZE" >> "$GITHUB_OUTPUT"
           echo "source: $URL"
+          echo "target: apk/BydSignIn-$VERSION.apk expect=$SIZE"
 
       - name: Download apk
         run: |
           set -euo pipefail
           mkdir -p apk
           curl -L --fail --retry 3 --retry-delay 5 --max-time 900 \
-            -o apk/BydSignIn-26.1115.16.apk "${{ steps.src.outputs.url }}"
+            -o "${{ steps.src.outputs.file }}" "${{ steps.src.outputs.url }}"
           ls -l apk/
 
       - name: Verify package
         run: |
           set -euo pipefail
-          python3 - <<'PY'
+          python3 - <<PY
           import zipfile, hashlib, os
-          p = 'apk/BydSignIn-26.1115.16.apk'
-          assert os.path.getsize(p) > 5_000_000, 'file too small'
+          p = '${{ steps.src.outputs.file }}'
+          expect = '${{ steps.src.outputs.expect }}'
+          size = os.path.getsize(p)
+          assert size > 5_000_000, 'file too small: %d' % size
+          if expect:
+              assert size == int(expect), 'size mismatch: got %d, update.json says %s' % (size, expect)
           z = zipfile.ZipFile(p)
           names = z.namelist()
           assert 'AndroidManifest.xml' in names, 'not an apk'
           assert 'classes.dex' in names, 'no dex'
           print('entries:', len(names))
+          print('size:', size)
           print('sha256:', hashlib.sha256(open(p,'rb').read()).hexdigest())
           PY
 
@@ -58,6 +70,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'no change'
           else
-            git commit -m 'apk: add BydSignIn-26.1115.16.apk'
+            git commit -m "apk: add $(basename "${{ steps.src.outputs.file }}")"
             git push origin HEAD:main
           fi
