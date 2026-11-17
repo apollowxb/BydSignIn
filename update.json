@@ -1,6 +1,9 @@
 {
   "version": "26.1117.2257",
   "apk": "https://aka.doubaocdn.com/s/6m8tAx4jpX",
+  "apk_mirrors": [
+    "https://raw.githubusercontent.com/apollowxb/BydSignIn/main/apk/BydSignIn-26.1117.2257.apk"
+  ],
   "size": 14675064,
   "notes": "设置页「检查更新」卡片遇到新版本时直接显示「发现新版本 X」\n· 自动检测到新版本后，进入设置页不再显示「当前版本 X（检测到新版本 Y）」，改为单独一行「发现新版本 Y」\n· 手动点「检查」发现新版本时，与自动检测保持同一文案\n· 没有新版本时仍显示「当前版本 X」，点击检查确实已是最新时会显示「当前版本 X · 已是最新」",
   "page": "https://github.com/apollowxb/BydSignIn"
