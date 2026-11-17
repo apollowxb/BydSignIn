@@ -1,10 +1,7 @@
 {
-  "version": "26.1117.2219",
-  "apk": "https://aka.doubaocdn.com/s/MVbJdsqhCB",
-  "apk_mirrors": [
-    "https://raw.githubusercontent.com/apollowxb/BydSignIn/main/apk/BydSignIn-26.1117.2219.apk"
-  ],
+  "version": "26.1117.2257",
+  "apk": "https://aka.doubaocdn.com/s/6m8tAx4jpX",
   "size": 14675064,
-  "notes": "更新提醒不再反复打扰，只提醒一次\n· 检测到新版本时仍按原逻辑弹窗一次；用户没点「立即更新」后，同一版本不再弹窗，检查更新照常在后台执行\n· 设置页「检查更新」卡片在「当前版本」后追加「（检测到新版本 X）」，X 始终显示 GitHub 上的最新版本号\n· 升级到该版本后自动恢复弹窗提醒",
+  "notes": "设置页「检查更新」卡片遇到新版本时直接显示「发现新版本 X」\n· 自动检测到新版本后，进入设置页不再显示「当前版本 X（检测到新版本 Y）」，改为单独一行「发现新版本 Y」\n· 手动点「检查」发现新版本时，与自动检测保持同一文案\n· 没有新版本时仍显示「当前版本 X」，点击检查确实已是最新时会显示「当前版本 X · 已是最新」",
   "page": "https://github.com/apollowxb/BydSignIn"
 }
